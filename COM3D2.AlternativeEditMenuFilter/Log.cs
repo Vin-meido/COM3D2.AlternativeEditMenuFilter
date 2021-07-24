@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using BepInEx.Logging;
 
-namespace COM3D2.BetterEditMenuFilter
+namespace COM3D2.AlternativeEditMenuFilter
 {
     internal class Log
     {
@@ -12,7 +12,7 @@ namespace COM3D2.BetterEditMenuFilter
         {
             get
             {
-                return BetterEditMenuFilterPlugin.Instance.Logger;
+                return AlternateEditMenuFilterPlugin.Instance.Logger;
             }
         }
 

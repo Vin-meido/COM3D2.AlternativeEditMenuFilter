@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ECCB25FA-325B-4AD3-925C-572C652A82E2}</ProjectGuid>
+    <ProjectGuid>{6E13F966-B4CC-40BA-A8FB-4DAA45E1346F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>COM3D2.BetterEditMenuFilter.MTLProvider</RootNamespace>
-    <AssemblyName>COM3D2.BetterEditMenuFilter.MTLProvider</AssemblyName>
+    <RootNamespace>COM3D2.AlternativeEditMenuFilter</RootNamespace>
+    <AssemblyName>COM3D2.AlternativeEditMenuFilter</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,6 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\libs\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\libs\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\libs\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\libs\BepInEx.dll</HintPath>
     </Reference>
@@ -43,19 +52,31 @@
     <Reference Include="UnityEngine">
       <HintPath>..\libs\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="XUnity.AutoTranslator.Plugin.Core">
-      <HintPath>..\libs\XUnity.AutoTranslator.Plugin.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BetterEditMenuFilterMTLProviderPlugin.cs" />
+    <Compile Include="Assert.cs" />
+    <Compile Include="AlternativeEditMenuFilterPlugin.cs" />
+    <Compile Include="EditMenuPanelFilter.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="DummyTranslationProvider.cs" />
+    <Compile Include="EditMenuPanelController.cs" />
+    <Compile Include="EditMenuPanelItem.cs" />
+    <Compile Include="ITranslationProvider.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="PresetPanelFilter.cs" />
+    <Compile Include="PresetPanelController.cs" />
+    <Compile Include="PresetPanelItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\COM3D2.BetterEditMenuFilter\COM3D2.BetterEditMenuFilter.csproj">
-      <Project>{6e13f966-b4cc-40ba-a8fb-4daa45e1346f}</Project>
-      <Name>COM3D2.BetterEditMenuFilter</Name>
+    <ProjectReference Include="..\..\..\SimpleUI\COM3D2.SimpleUI\COM3D2.SimpleUI\COM3D2.SimpleUI.csproj">
+      <Project>{290111f7-f530-476d-8496-233f1e4bc6e5}</Project>
+      <Name>COM3D2.SimpleUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) F:\COM-3d2\BepinEx\plugins
+copy $(TargetDir)\COM3D2.SimpleUI.dll F:\COM-3d2\BepinEx\plugins</PostBuildEvent>
+  </PropertyGroup>
 </Project>

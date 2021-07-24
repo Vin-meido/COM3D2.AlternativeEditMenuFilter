@@ -1,7 +1,7 @@
 /.vs
 /libs
-/COM3D2.BetterEditMenuFilter/obj
-/COM3D2.BetterEditMenuFilter/bin
-/COM3D2.BetterEditMenuFilter.MTLProvider/bin
-/COM3D2.BetterEditMenuFilter.MTLProvider/obj
-/COM3D2.BetterEditMenuFilter/*.user
+/COM3D2.AlternativeEditMenuFilter/obj
+/COM3D2.AlternativeEditMenuFilter/bin
+/COM3D2.AlternativeEditMenuFilter.MTLProvider/bin
+/COM3D2.AlternativeEditMenuFilter.MTLProvider/obj
+/COM3D2.AlternativeEditMenuFilter/*.user

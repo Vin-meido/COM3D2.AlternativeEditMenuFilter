@@ -9,7 +9,7 @@ using UnityEngine;
 using COM3D2.SimpleUI;
 using COM3D2.SimpleUI.Extensions;
 
-namespace COM3D2.BetterEditMenuFilter
+namespace COM3D2.AlternativeEditMenuFilter
 {
     public class PresetPanelFilter : MonoBehaviour
     {

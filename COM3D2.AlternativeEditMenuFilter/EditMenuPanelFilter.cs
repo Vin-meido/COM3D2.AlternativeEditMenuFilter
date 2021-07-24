@@ -9,7 +9,7 @@ using COM3D2.SimpleUI;
 using COM3D2.SimpleUI.Extensions;
 using System.Globalization;
 
-namespace COM3D2.BetterEditMenuFilter
+namespace COM3D2.AlternativeEditMenuFilter
 {
     public class EditMenuPanelFilter : MonoBehaviour
     {
@@ -70,7 +70,7 @@ namespace COM3D2.BetterEditMenuFilter
 
         ITranslationProvider TranslationProvider
         {
-            get => BetterEditMenuFilterPlugin.Instance.TranslationProvider;
+            get => AlternateEditMenuFilterPlugin.Instance.TranslationProvider;
         }
 
         void Awake()

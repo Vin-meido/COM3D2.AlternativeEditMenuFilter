@@ -7,7 +7,7 @@ using BepInEx;
 using UnityEngine;
 using XUnity.AutoTranslator.Plugin.Core;
 
-namespace COM3D2.BetterEditMenuFilter.MTLProvider
+namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
 {
     [BepInPlugin("org.bepinex.plugins.com3d2.bettereditmenufilter.mtlprovider", "BetterEditMenuFilter.MTLProvider", "1.0.0.0")]
     public class BetterEditMenuFilterMTLProviderPlugin: BaseUnityPlugin, ITranslationProvider
@@ -30,7 +30,7 @@ namespace COM3D2.BetterEditMenuFilter.MTLProvider
         void Start()
         {
             this.translator = Resources.FindObjectsOfTypeAll<AutoTranslationPlugin>().FirstOrDefault();
-            BetterEditMenuFilterPlugin.Instance.TranslationProvider = this;
+            AlternateEditMenuFilterPlugin.Instance.TranslationProvider = this;
         }
 
         class TResult : ITranslationResult

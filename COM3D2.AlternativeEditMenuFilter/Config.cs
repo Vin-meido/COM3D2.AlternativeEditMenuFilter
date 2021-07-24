@@ -5,7 +5,7 @@ using System.Text;
 
 using BepInEx.Configuration;
 
-namespace COM3D2.BetterEditMenuFilter
+namespace COM3D2.AlternativeEditMenuFilter
 {
     public class MenuSearchConfig
     {
@@ -112,7 +112,7 @@ namespace COM3D2.BetterEditMenuFilter
         }
     }
 
-    public class BetterEditMenuFilterConfig
+    public class AlternativeEditMenuFilterConfig
     {
         public MenuSearchConfig ItemSearchConfig { get; private set; }
 
@@ -120,7 +120,7 @@ namespace COM3D2.BetterEditMenuFilter
 
         public PresetSearchConfig PresetSearchConfig { get; private set; }
 
-        public BetterEditMenuFilterConfig(ConfigFile cfg)
+        public AlternativeEditMenuFilterConfig(ConfigFile cfg)
         {
             ItemSearchConfig = new MenuSearchConfig(cfg, "Items");
             ItemSetSearchConfig = new MenuSearchConfig(cfg, "Item presets");

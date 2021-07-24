@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.BetterEditMenuFilter", "COM3D2.BetterEditMenuFilter\COM3D2.BetterEditMenuFilter.csproj", "{6E13F966-B4CC-40BA-A8FB-4DAA45E1346F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.AlternativeEditMenuFilter", "COM3D2.AlternativeEditMenuFilter\COM3D2.AlternativeEditMenuFilter.csproj", "{6E13F966-B4CC-40BA-A8FB-4DAA45E1346F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.SimpleUI", "..\..\SimpleUI\COM3D2.SimpleUI\COM3D2.SimpleUI\COM3D2.SimpleUI.csproj", "{290111F7-F530-476D-8496-233F1E4BC6E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.BetterEditMenuFilter.MTLProvider", "COM3D2.BetterEditMenuFilter.MTLProvider\COM3D2.BetterEditMenuFilter.MTLProvider.csproj", "{ECCB25FA-325B-4AD3-925C-572C652A82E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.AlternativeEditMenuFilter.MTLProvider", "COM3D2.AlternativeEditMenuFilter.MTLProvider\COM3D2.AlternativeEditMenuFilter.MTLProvider.csproj", "{ECCB25FA-325B-4AD3-925C-572C652A82E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

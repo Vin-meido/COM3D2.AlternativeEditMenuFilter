@@ -8,16 +8,16 @@ using UnityEngine.SceneManagement;
 using BepInEx;
 using BepInEx.Logging;
 
-namespace COM3D2.BetterEditMenuFilter
+namespace COM3D2.AlternativeEditMenuFilter
 {
-    [BepInPlugin("org.bepinex.plugins.com3d2.bettereditmenufilter", "BetterEditMenuFilter", "1.0.0.0")]
-    public class BetterEditMenuFilterPlugin: BaseUnityPlugin
+    [BepInPlugin("org.bepinex.plugins.com3d2.alternativeeditmenufilter", "AlternativeEditMenuFilter", "1.0")]
+    public class AlternateEditMenuFilterPlugin: BaseUnityPlugin
     {
-        public static BetterEditMenuFilterPlugin Instance { get; private set; }
+        public static AlternateEditMenuFilterPlugin Instance { get; private set; }
 
 		public ITranslationProvider TranslationProvider { get; set; }
 
-		public new BetterEditMenuFilterConfig Config { get; private set; }
+		public new AlternativeEditMenuFilterConfig Config { get; private set; }
 
 		void Awake()
         {
@@ -25,7 +25,7 @@ namespace COM3D2.BetterEditMenuFilter
             Instance = this;
             DontDestroyOnLoad(this);
 
-			this.Config = new BetterEditMenuFilterConfig(base.Config);
+			this.Config = new AlternativeEditMenuFilterConfig(base.Config);
 
 			this.TranslationProvider = new DummyTranslationProvider();
 
