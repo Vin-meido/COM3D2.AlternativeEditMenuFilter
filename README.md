@@ -1,6 +1,6 @@
-# COM3D2.BetterEditMenuFilter
+# COM3D2.AlternativeEditMenuFilter
 
-A (slightly) better EditMenuFilter featuring better english buttons, searching english translations (including XUnity.AutoTranslator translations), and menu filename search
+An alternative EditMenuFilter featuring english buttons, searching english translations (including XUnity.AutoTranslator translations), and menu filename search
 
 ![Screenshot](Screenshot.png?raw=true "Screenshot")
 
