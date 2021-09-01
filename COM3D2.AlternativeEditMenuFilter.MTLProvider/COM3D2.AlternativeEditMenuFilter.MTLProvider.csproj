@@ -58,4 +58,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if not exist "F:\COM-3d2\BepinEx\plugins\AlternativeEditMenuFilter" mkdir "F:\COM-3d2\BepinEx\plugins\AlternativeEditMenuFilter"
+
+copy $(TargetPath) F:\COM-3d2\BepinEx\plugins\AlternativeEditMenuFilter
+copy $(TargetDir)\COM3D2.AlternativeEditMenuFilter.dll F:\COM-3d2\BepinEx\plugins\AlternativeEditMenuFilter
+copy $(TargetDir)\COM3D2.SimpleUI.dll F:\COM-3d2\BepinEx\plugins\AlternativeEditMenuFilter</PostBuildEvent>
+  </PropertyGroup>
 </Project>

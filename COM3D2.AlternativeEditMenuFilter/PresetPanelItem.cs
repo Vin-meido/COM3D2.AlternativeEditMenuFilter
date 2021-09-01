@@ -58,9 +58,21 @@ namespace COM3D2.AlternativeEditMenuFilter
             get => gameObject.name;
         }
 
+
+        public bool IsClothesBody { get; private set; }
+        public bool IsClothes { get; private set; }
+        public bool IsBody { get; private set; }
+
         public PresetPanelItem(GameObject go)
         {
             this.gameObject = go;
+
+            UISprite typeUISprite = go.GetComponentInChildren<UISprite>(true);
+            var spriteName = typeUISprite.spriteName;
+
+            this.IsClothesBody = spriteName.Contains("kindicon_clothes_body");
+            this.IsClothes = spriteName.Contains("kindicon_clothes");
+            this.IsBody = spriteName.Contains("kindicon_body");
         }
 
         public void ShowName()

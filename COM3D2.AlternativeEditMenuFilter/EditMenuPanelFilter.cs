@@ -95,6 +95,12 @@ namespace COM3D2.AlternativeEditMenuFilter
             Assert.IsNotNull(this.config, "Not properly initialized");
             this.BuildUI();
         }
+
+        void OnEnable()
+        {
+            this.QueueUpdateItemList();
+        }
+
         void OnDisable()
         {
             Log.LogVerbose("Saving search history");
@@ -260,7 +266,7 @@ namespace COM3D2.AlternativeEditMenuFilter
         void QueueUpdateItemList()
         {
             updateItemListQueued = true;
-            Log.LogVerbose($"UpdateItemList queue from:\n{System.Environment.StackTrace}");
+            controller.HidePanel();
         }
 
         void UpdateItemList() { 
@@ -273,17 +279,18 @@ namespace COM3D2.AlternativeEditMenuFilter
             if(termList.Length == 0)
             {
                 controller.ShowAll();
+                controller.ShowPanel();
                 controller.ResetView();
                 return;
             }
 
             Log.LogVerbose($"Performing filter");
 
-            foreach (var item in controller.GetAllGameObjectMenus())
+            foreach (var item in controller.GetAllItems())
             {
                 FilterItem(item, termList);
             }
-
+            controller.ShowPanel();
             controller.ResetView();
         }
 

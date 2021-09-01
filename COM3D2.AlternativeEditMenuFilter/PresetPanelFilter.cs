@@ -70,6 +70,11 @@ namespace COM3D2.AlternativeEditMenuFilter
             this.config.History.Value = String.Join("\n", this.History.ToArray());
         }
 
+        void OnEnable()
+        {
+            this.QueueUpdateItemList();
+        }
+
         void Update()
         {
             if (updateItemListQueued)
@@ -209,7 +214,6 @@ namespace COM3D2.AlternativeEditMenuFilter
         void QueueUpdateItemList()
         {
             updateItemListQueued = true;
-            Log.LogVerbose($"UpdateItemList queue from:\n{System.Environment.StackTrace}");
         }
 
         void UpdateItemList()

@@ -71,16 +71,26 @@ namespace COM3D2.AlternativeEditMenuFilter
                 return true;
             }
             UISprite getComponentInChildren = trans.GetComponentInChildren<UISprite>(true);
+            Assert.IsNotNull(getComponentInChildren, "could not find identifier");
             if (getComponentInChildren)
             {
                 switch (PresetMgr.m_currentActiveFilterBtnName)
                 {
                     case PresetMgr.Filter.All:
-                        return getComponentInChildren.spriteName.Contains("kindicon_clothes_body");
+                        return (
+                            getComponentInChildren.spriteName.EndsWith("kindicon_clothes_body") ||
+                            getComponentInChildren.spriteName.EndsWith("kindicon_clothes_body_en")
+                        );
                     case PresetMgr.Filter.Wear:
-                        return getComponentInChildren.spriteName.Contains("kindicon_clothes");
+                        return (
+                            getComponentInChildren.spriteName.EndsWith("kindicon_clothes") ||
+                            getComponentInChildren.spriteName.EndsWith("kindicon_clothes_en")
+                        );
                     case PresetMgr.Filter.Body:
-                        return getComponentInChildren.spriteName.Contains("kindicon_body");
+                        return (
+                            getComponentInChildren.spriteName.EndsWith("kindicon_body") ||
+                            getComponentInChildren.spriteName.EndsWith("kindicon_body_en")
+                        );
                 }
             }
             return false;

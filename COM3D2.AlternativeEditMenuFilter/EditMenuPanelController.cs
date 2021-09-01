@@ -9,6 +9,7 @@ namespace COM3D2.AlternativeEditMenuFilter
     public class EditMenuPanelController
     {
 		UIGrid m_grid;
+		UIPanel m_scrollViewPanel;
 		UIScrollView m_scrollView;
 		Transform m_gridTableTrans;
 		UIScrollBar m_scrollBar;
@@ -18,6 +19,8 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
 			this.m_scrollView = go.GetComponentInChildren<UIScrollView>(false);
 			Assert.IsNotNull(m_scrollView, $"Could not find UIScrollView for {go}");
+
+			m_scrollViewPanel = m_scrollView.GetComponent<UIPanel>();
 
 			this.m_grid = this.m_scrollView.GetComponentInChildren<UIGrid>();
 			Assert.IsNotNull(m_grid, $"Could not find UIGrid for {go}");
@@ -31,7 +34,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 			Assert.IsNotNull(m_scrollBar, $"Could not find UIScrollBar for {go}");
 		}
 
-		public IEnumerable<EditMenuPanelItem> GetAllGameObjectMenus()
+		public IEnumerable<EditMenuPanelItem> GetAllItems()
 		{
 			return (from i in Enumerable.Range(0, this.m_gridTableTrans.childCount)
 					select this.m_gridTableTrans.GetChild(i) into item
@@ -60,7 +63,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
 		public void ShowAll()
         {
-			foreach (var r in GetAllGameObjectMenus())
+			foreach (var r in GetAllItems())
             {
 				if (!r.gameObject.activeSelf)
                 {
@@ -68,5 +71,15 @@ namespace COM3D2.AlternativeEditMenuFilter
                 }
             }
         }
+
+        internal void HidePanel()
+        {
+			this.m_scrollViewPanel.alpha = 0.0f;
+        }
+
+        internal void ShowPanel()
+        {
+			this.m_scrollViewPanel.alpha = 1.0f;
+		}
 	}
 }
