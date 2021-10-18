@@ -11,6 +11,12 @@ using System.Globalization;
 
 namespace COM3D2.AlternativeEditMenuFilter
 {
+    class PendingTranslation
+    {
+        public EditMenuPanelItem Item { get; set; }
+        public ITranslationAsyncResult Result { get; set; }
+    }
+
     public class EditMenuPanelFilter : MonoBehaviour
     {
         EditMenuPanelController controller;
@@ -72,6 +78,8 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             get => AlternateEditMenuFilterPlugin.Instance.TranslationProvider;
         }
+
+        readonly List<PendingTranslation> pendingTranslations = new List<PendingTranslation>();
 
         void Awake()
         {
@@ -276,6 +284,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Select(t => t.Trim())
                 .ToArray();
 
+            /*
             if(termList.Length == 0)
             {
                 controller.ShowAll();
@@ -283,13 +292,27 @@ namespace COM3D2.AlternativeEditMenuFilter
                 controller.ResetView();
                 return;
             }
+            */
+
+            Log.LogVerbose("Clearing pending translations");
+            this.pendingTranslations.Clear();
 
             Log.LogVerbose($"Performing filter");
-
             foreach (var item in controller.GetAllItems())
             {
-                FilterItem(item, termList);
+                item.Visible = true;
+
+                if (termList.Length != 0)
+                {
+                    FilterItem(item, termList);
+                } 
+
+                if (item.Visible)
+                {
+                    FilterType(item);
+                }
             }
+
             controller.ShowPanel();
             controller.ResetView();
         }
@@ -309,6 +332,16 @@ namespace COM3D2.AlternativeEditMenuFilter
                 var inLocalizedName = SearchLocalized && StringContains(item.LocalizedName, termList);
                 var inTranslatedName = SearchMTL && TranslationContains(item.Name, termList, out translatedNameAvailable);
                 inName = inOriginalName || inLocalizedName || inTranslatedName;
+
+                if (!translatedNameAvailable)
+                {
+                    Log.LogVerbose($"Sending string for translation: {item.Name}");
+                    this.pendingTranslations.Add(new PendingTranslation()
+                    {
+                        Item = item,
+                        Result = TranslationProvider.TranslateAsync(item.Name)
+                    });
+                }
             }
 
             if (SearchInInfo)
@@ -317,9 +350,19 @@ namespace COM3D2.AlternativeEditMenuFilter
                 var inLocalizedInfo = SearchLocalized && StringContains(item.LocalizedInfo, termList);
                 var inTranslatedInfo = SearchMTL && TranslationContains(item.Info, termList, out translatedInfoAvailable);
                 inInfo = inOriginalInfo || inLocalizedInfo || inTranslatedInfo;
+
+                if (!translatedInfoAvailable)
+                {
+                    Log.LogVerbose($"Sending string for translation: {item.Info}");
+                    this.pendingTranslations.Add(new PendingTranslation()
+                    {
+                        Item = item,
+                        Result = TranslationProvider.TranslateAsync(item.Info)
+                    });
+                }
             }
 
-            if(SearchInFilename)
+            if (SearchInFilename)
             {
                 inFilename = StringContains(item.Filename, termList);
             }
@@ -341,6 +384,11 @@ namespace COM3D2.AlternativeEditMenuFilter
                 return;
             }
 
+            item.Visible = true;
+        }
+
+        void FilterType(EditMenuPanelItem item)
+        {
             Log.LogVerbose($"{item.Filename} IsMod:{item.IsMod} IsCompat:{item.IsCompat} IsVanilla:{item.IsVanilla}");
 
             if (item.IsMod && !IncludeMods)

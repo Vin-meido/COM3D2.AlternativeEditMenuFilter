@@ -54,6 +54,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 		{
 			bool enabled = this.m_grid.enabled;
 			this.m_grid.enabled = true;
+			this.m_grid.hideInactive = true;
 			this.m_grid.Reposition();
 			this.m_scrollView.ResetPosition();
 			this.m_scrollBar.value = 0f;

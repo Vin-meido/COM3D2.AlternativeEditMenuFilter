@@ -61,6 +61,12 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
                 this.IsTranslationSuccessful = r.Succeeded;
                 this.TranslatedText = r.TranslatedText;
                 this.IsReady = true;
+                LogVerbose($"AsyntTranslationResolved: {this}");
+            }
+
+            public override string ToString()
+            {
+                return $"succeeded:{IsTranslationSuccessful}\n\ttext:{OriginalText}\n\ttranslated:{TranslatedText}";
             }
         }
 
@@ -85,6 +91,11 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
             };
             translator.TranslateAsync(text, result.Resolve);
             return result;
+        }
+
+        static void LogVerbose(object obj)
+        {
+            Instance.Logger.LogInfo(obj);
         }
 
     }
