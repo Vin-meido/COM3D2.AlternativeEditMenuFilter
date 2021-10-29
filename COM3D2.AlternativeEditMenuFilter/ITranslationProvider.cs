@@ -21,5 +21,6 @@ namespace COM3D2.AlternativeEditMenuFilter
     {
         ITranslationResult Translate(string text);
         ITranslationAsyncResult TranslateAsync(string text);
+        void ResetAsyncQueue();
     }
 }

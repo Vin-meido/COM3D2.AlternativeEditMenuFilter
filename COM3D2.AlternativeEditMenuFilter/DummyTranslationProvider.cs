@@ -39,5 +39,10 @@ namespace COM3D2.AlternativeEditMenuFilter
                 IsReady = true,
             };
         }
+
+        public void ResetAsyncQueue()
+        {
+            return;
+        }
     }
 }

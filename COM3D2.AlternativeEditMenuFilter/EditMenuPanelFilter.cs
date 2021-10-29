@@ -125,6 +125,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             if(updateItemListQueued)
             {
                 updateItemListQueued = false;
+                this.TranslationProvider.ResetAsyncQueue();
                 UpdateItemList();
             }
         }
@@ -301,6 +302,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
             Log.LogVerbose("Clearing pending translations");
             this.pendingTranslations.Clear();
+            this.TranslationProvider.ResetAsyncQueue();
 
             Log.LogVerbose($"Performing filter");
             foreach (var item in controller.GetAllItems())
@@ -338,7 +340,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 var inTranslatedName = SearchMTL && TranslationContains(item.Name, termList, out translatedNameAvailable);
                 inName = inOriginalName || inLocalizedName || inTranslatedName;
 
-                if (!translatedNameAvailable)
+                if (SearchMTL && !translatedNameAvailable)
                 {
                     QueueTranslation(item, item.Name);
                 }
@@ -351,7 +353,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 var inTranslatedInfo = SearchMTL && TranslationContains(item.Info, termList, out translatedInfoAvailable);
                 inInfo = inOriginalInfo || inLocalizedInfo || inTranslatedInfo;
 
-                if (!translatedInfoAvailable)
+                if (SearchMTL && !translatedInfoAvailable)
                 {
                     QueueTranslation(item, item.Info);
                 }
@@ -386,11 +388,11 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             if (SendMTL)
             {
-                Log.LogVerbose($"Sending string for translation: {item.Info}");
+                Log.LogVerbose($"Sending string for translation: {text}");
                 this.pendingTranslations.Add(new PendingTranslation()
                 {
                     Item = item,
-                    Result = TranslationProvider.TranslateAsync(item.Info)
+                    Result = TranslationProvider.TranslateAsync(text)
                 });
             }
         }
@@ -478,6 +480,7 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             this.search = "";
             this.searchTextField.Value = "";
+            this.TranslationProvider.ResetAsyncQueue();
             controller.ShowAll();
             controller.ResetView();
         }

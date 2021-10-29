@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
         public static BetterEditMenuFilterMTLProviderPlugin Instance { get; private set; }
 
         ITranslator translator;
+        readonly Queue<AsyncTResult> queue = new Queue<AsyncTResult>();
 
         void Awake()
         {
@@ -31,6 +33,7 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
         {
             this.translator = AutoTranslator.Default;
             AlternateEditMenuFilterPlugin.Instance.TranslationProvider = this;
+            StartCoroutine(this.StartTranslationCoroutine());
         }
 
         class TResult : ITranslationResult
@@ -50,6 +53,11 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
                 get;
                 set;
             }
+
+            public override string ToString()
+            {
+                return $"succeeded:{IsTranslationSuccessful}\n\ttext:{OriginalText}\n\ttranslated:{TranslatedText}";
+            }
         }
 
         class AsyncTResult : TResult, ITranslationAsyncResult
@@ -62,11 +70,6 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
                 this.TranslatedText = r.TranslatedText;
                 this.IsReady = true;
                 LogVerbose($"AsyntTranslationResolved: {this}");
-            }
-
-            public override string ToString()
-            {
-                return $"succeeded:{IsTranslationSuccessful}\n\ttext:{OriginalText}\n\ttranslated:{TranslatedText}";
             }
         }
 
@@ -89,8 +92,33 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
                 OriginalText = text,
                 IsReady = false
             };
-            translator.TranslateAsync(text, result.Resolve);
+            this.queue.Enqueue(result);
             return result;
+        }
+
+        public void ResetAsyncQueue()
+        {
+            this.StopAllCoroutines();
+            this.queue.Clear();
+            this.StartCoroutine(this.StartTranslationCoroutine());
+        }
+
+        IEnumerator StartTranslationCoroutine()
+        {
+            while(true)
+            {
+                yield return new WaitUntil(() => this.queue.Count > 0);
+
+                var r = this.queue.Dequeue();
+                var complete = false;
+                LogVerbose($"Translating: {r.OriginalText}");
+                translator.TranslateAsync(r.OriginalText, (t) => {
+                    complete = true;
+                    r.Resolve(t);
+                });
+
+                yield return new WaitUntil(() => complete);
+            }
         }
 
         static void LogVerbose(object obj)
