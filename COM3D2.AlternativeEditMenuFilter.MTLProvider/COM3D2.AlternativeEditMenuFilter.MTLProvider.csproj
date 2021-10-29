@@ -66,6 +66,6 @@ copy $(TargetDir)\COM3D2.AlternativeEditMenuFilter.dll BepinEx\Plugins\Alternati
 copy $(TargetDir)\COM3D2.SimpleUI.dll BepinEx\Plugins\AlternativeEditMenuFilter\
 tar -cvaf COM3D2.AlternativeEditMenuFilter.zip BepinEx
 explorer.exe .
-copy BepinEx\Plugins\AlternativeEditMenuFilter F:\COM-3d2\BepinEx\plugins</PostBuildEvent>
+xcopy /E BepinEx\Plugins F:\COM-3d2\BepinEx\plugins\</PostBuildEvent>
   </PropertyGroup>
 </Project>
