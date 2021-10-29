@@ -46,6 +46,11 @@ namespace COM3D2.AlternativeEditMenuFilter
         bool SearchMTL { 
             get => SearchLocalized && config.SearchMTL.Value;}
 
+        bool SendMTL
+        {
+            get => SearchMTL && config.SendMTL.Value;
+        }
+
         bool SearchAllTerms {
             get => config.SearchAllTerms.Value;
             set => config.SearchAllTerms.Value = value; }
@@ -158,7 +163,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Choice(SearchTextModeEnum.NAME, "[Name]", "Name")
                 .Choice(SearchTextModeEnum.DESCRIPTION, "[Info]", "Info")
                 .Choice(SearchTextModeEnum.FILENAME, "[Fn] Filename", "Fn")
-                .Choice(SearchTextModeEnum.DIRECTORYNAME, "[Dir] Full directory path", "Dir")
+//                .Choice(SearchTextModeEnum.DIRECTORYNAME, "[Dir] Full directory path", "Dir")
                 .SetValue(this.SearchTextMode)
                 .SetUpdateTextOnValuechange(true)
                 .AddChangeCallback(o => { 
@@ -335,12 +340,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
                 if (!translatedNameAvailable)
                 {
-                    Log.LogVerbose($"Sending string for translation: {item.Name}");
-                    this.pendingTranslations.Add(new PendingTranslation()
-                    {
-                        Item = item,
-                        Result = TranslationProvider.TranslateAsync(item.Name)
-                    });
+                    QueueTranslation(item, item.Name);
                 }
             }
 
@@ -353,12 +353,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
                 if (!translatedInfoAvailable)
                 {
-                    Log.LogVerbose($"Sending string for translation: {item.Info}");
-                    this.pendingTranslations.Add(new PendingTranslation()
-                    {
-                        Item = item,
-                        Result = TranslationProvider.TranslateAsync(item.Info)
-                    });
+                    QueueTranslation(item, item.Info);
                 }
             }
 
@@ -385,6 +380,19 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
 
             item.Visible = true;
+        }
+
+        void QueueTranslation(EditMenuPanelItem item, string text)
+        {
+            if (SendMTL)
+            {
+                Log.LogVerbose($"Sending string for translation: {item.Info}");
+                this.pendingTranslations.Add(new PendingTranslation()
+                {
+                    Item = item,
+                    Result = TranslationProvider.TranslateAsync(item.Info)
+                });
+            }
         }
 
         void FilterType(EditMenuPanelItem item)

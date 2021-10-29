@@ -29,7 +29,7 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
 
         void Start()
         {
-            this.translator = Resources.FindObjectsOfTypeAll<AutoTranslationPlugin>().FirstOrDefault();
+            this.translator = AutoTranslator.Default;
             AlternateEditMenuFilterPlugin.Instance.TranslationProvider = this;
         }
 

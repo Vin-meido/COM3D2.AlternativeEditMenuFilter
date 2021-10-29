@@ -15,6 +15,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public ConfigEntry<bool> SearchLocalized { get; private set; }
         public ConfigEntry<bool> SearchMTL { get; private set; }
+        public ConfigEntry<bool> SendMTL { get; private set; }
 
         public ConfigEntry<EditMenuPanelFilter.ItemTypeFilterEnum> ItemTypeFilter { get; private set; }
 
@@ -47,6 +48,12 @@ namespace COM3D2.AlternativeEditMenuFilter
                 "Search MTL",
                 true,
                 "Search in MTL'd strings");
+
+            SendMTL = cfg.Bind(
+                section,
+                "Send MTL",
+                false,
+                "If text isnt translated yet, send the text to Autotranslator for MTL");
 
             SearchAllTerms = cfg.Bind(
                 section,
