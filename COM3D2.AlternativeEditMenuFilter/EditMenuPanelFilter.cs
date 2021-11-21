@@ -172,7 +172,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                     {
                         this.SearchTextMode = mode;
                         this.QueueUpdateItemList();
-                        Log.LogVerbose($"New mode is {mode}");
+                        Log.LogVerbose("New mode is {0}", mode);
                     }
                 });
 
@@ -189,7 +189,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                     {
                         this.ItemTypeFilter = t;
                         this.QueueUpdateItemList();
-                        Log.LogVerbose($"New filter type is {t}");
+                        Log.LogVerbose("New filter type is {0}", t);
                     }
                 });
 
@@ -290,46 +290,27 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Select(t => t.Trim())
                 .ToArray();
 
-            /*
-            if(termList.Length == 0)
-            {
-                controller.ShowAll();
-                controller.ShowPanel();
-                controller.ResetView();
-                return;
-            }
-            */
-
             Log.LogVerbose("Clearing pending translations");
             this.pendingTranslations.Clear();
             this.TranslationProvider.ResetAsyncQueue();
 
-            Log.LogVerbose($"Performing filter");
+            Log.LogVerbose("Performing filter");
             foreach (var item in controller.GetAllItems())
             {
-                item.Visible = true;
-
-                if (termList.Length != 0)
-                {
-                    FilterItem(item, termList);
-                } 
-
-                if (item.Visible)
-                {
-                    FilterType(item);
-                }
+                var matchesTermList = termList.Length == 0 || FilterItem(item, termList);
+                item.Visible = matchesTermList && FilterType(item);
             }
 
             controller.ShowPanel();
             controller.ResetView();
         }
 
-        void FilterItem(EditMenuPanelItem item, string[] termList)
+        bool FilterItem(EditMenuPanelItem item, string[] termList)
         {
-            var inName = false;
-            var inInfo = false;
-            var inFilename = false;
-            var inDirectoryname = false;
+            var inName = SearchInName;
+            var inInfo = SearchInInfo;
+            var inFilename = SearchInFilename;
+            var inDirectoryname = SearchInDirectoryName;
             var translatedNameAvailable = false;
             var translatedInfoAvailable = false;
 
@@ -339,11 +320,6 @@ namespace COM3D2.AlternativeEditMenuFilter
                 var inLocalizedName = SearchLocalized && StringContains(item.LocalizedName, termList);
                 var inTranslatedName = SearchMTL && TranslationContains(item.Name, termList, out translatedNameAvailable);
                 inName = inOriginalName || inLocalizedName || inTranslatedName;
-
-                if (SearchMTL && !translatedNameAvailable)
-                {
-                    QueueTranslation(item, item.Name);
-                }
             }
 
             if (SearchInInfo)
@@ -352,11 +328,6 @@ namespace COM3D2.AlternativeEditMenuFilter
                 var inLocalizedInfo = SearchLocalized && StringContains(item.LocalizedInfo, termList);
                 var inTranslatedInfo = SearchMTL && TranslationContains(item.Info, termList, out translatedInfoAvailable);
                 inInfo = inOriginalInfo || inLocalizedInfo || inTranslatedInfo;
-
-                if (SearchMTL && !translatedInfoAvailable)
-                {
-                    QueueTranslation(item, item.Info);
-                }
             }
 
             if (SearchInFilename)
@@ -370,25 +341,14 @@ namespace COM3D2.AlternativeEditMenuFilter
                 inDirectoryname = StringContains(directoryName, termList);
             }
 
-
-            if (!(SearchInName && inName
-                || SearchInInfo && inInfo
-                || SearchInFilename && inFilename
-                || SearchInDirectoryName && inDirectoryname))
-            {
-                //Log.LogVerbose($"Hiding {item.Filename}, name/info does not satisfy search term");
-                item.Visible = false;
-                return;
-            }
-
-            item.Visible = true;
+            return inName || inInfo || inFilename || inDirectoryname;
         }
 
         void QueueTranslation(EditMenuPanelItem item, string text)
         {
             if (SendMTL)
             {
-                Log.LogVerbose($"Sending string for translation: {text}");
+                Log.LogVerbose("Sending string for translation: {0}", text);
                 this.pendingTranslations.Add(new PendingTranslation()
                 {
                     Item = item,
@@ -397,32 +357,27 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        void FilterType(EditMenuPanelItem item)
+        bool FilterType(EditMenuPanelItem item)
         {
-            Log.LogVerbose($"{item.Filename} IsMod:{item.IsMod} IsCompat:{item.IsCompat} IsVanilla:{item.IsVanilla}");
-
-            if (item.IsMod && !IncludeMods)
+            if (!IncludeMods && item.IsMod)
             {
-                Log.LogVerbose($"Hiding {item.Filename}, mods excluded");
-                item.Visible = false;
-                return;
+                Log.LogVerbose("Hiding {0}, mods excluded", item.Filename);
+                return false;
             }
 
-            if (item.IsCompat && !IncludeCompat)
+            if (!IncludeCompat && item.IsCompat)
             {
-                Log.LogVerbose($"Hiding {item.Filename}, compat excluded");
-                item.Visible = false;
-                return;
+                Log.LogVerbose("Hiding {0}, compat excluded", item.Filename);
+                return false;
             }
 
-            if (item.IsVanilla && !item.IsCompat && !IncludeVanilla)
+            if (!IncludeVanilla && item.IsVanilla && !item.IsCompat)
             {
-                Log.LogVerbose($"Hiding {item.Filename}, vanilla excluded");
-                item.Visible = false;
-                return;
+                Log.LogVerbose("Hiding {0}, vanilla excluded", item.Filename);
+                return false;
             }
 
-            item.Visible = true;
+            return true;
         }
 
         private string GetDirectoryName(string filename)

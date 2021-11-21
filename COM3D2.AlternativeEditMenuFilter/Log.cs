@@ -20,7 +20,7 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             get
             {
-                return true;
+                return false;
             }
         }
 

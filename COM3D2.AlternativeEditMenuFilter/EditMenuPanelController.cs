@@ -14,6 +14,8 @@ namespace COM3D2.AlternativeEditMenuFilter
 		Transform m_gridTableTrans;
 		UIScrollBar m_scrollBar;
 		SceneEdit m_sceneEdit;
+		readonly Dictionary<GameObject, EditMenuPanelItem> PanelItemCache = new Dictionary<GameObject, EditMenuPanelItem>();
+
 
 		public EditMenuPanelController(GameObject go)
         {

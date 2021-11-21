@@ -33,7 +33,7 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
         {
             this.translator = AutoTranslator.Default;
             AlternateEditMenuFilterPlugin.Instance.TranslationProvider = this;
-            StartCoroutine(this.StartTranslationCoroutine());
+            //StartCoroutine(this.StartTranslationCoroutine());
         }
 
         class TResult : ITranslationResult
@@ -69,7 +69,9 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
                 this.IsTranslationSuccessful = r.Succeeded;
                 this.TranslatedText = r.TranslatedText;
                 this.IsReady = true;
+#if DEBUG
                 LogVerbose($"AsyntTranslationResolved: {this}");
+#endif
             }
         }
 
@@ -92,15 +94,16 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
                 OriginalText = text,
                 IsReady = false
             };
-            this.queue.Enqueue(result);
+            translator.TranslateAsync(result.OriginalText, result.Resolve);
+            //this.queue.Enqueue(result);
             return result;
         }
 
         public void ResetAsyncQueue()
         {
-            this.StopAllCoroutines();
-            this.queue.Clear();
-            this.StartCoroutine(this.StartTranslationCoroutine());
+            //this.StopAllCoroutines();
+            //this.queue.Clear();
+            //this.StartCoroutine(this.StartTranslationCoroutine());
         }
 
         IEnumerator StartTranslationCoroutine()
@@ -111,7 +114,9 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
 
                 var r = this.queue.Dequeue();
                 var complete = false;
-                LogVerbose($"Translating: {r.OriginalText}");
+#if DEBUG
+                LogVerbose("Translating: {r.OriginalText}");
+#endif
                 translator.TranslateAsync(r.OriginalText, (t) => {
                     complete = true;
                     r.Resolve(t);
@@ -123,7 +128,9 @@ namespace COM3D2.AlternativeEditMenuFilter.MTLProvider
 
         static void LogVerbose(object obj)
         {
+#if DEBUG
             Instance.Logger.LogInfo(obj);
+#endif
         }
 
     }

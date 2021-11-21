@@ -231,7 +231,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 return;
             }
 
-            Log.LogVerbose($"Performing filter");
+            Log.LogVerbose("Performing filter");
 
             foreach (var item in controller.GetAllItems())
             {

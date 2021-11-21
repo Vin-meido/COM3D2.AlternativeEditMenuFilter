@@ -43,35 +43,45 @@ namespace COM3D2.AlternativeEditMenuFilter
 
 		}
 
-		public bool IsMod { get; private set; }
 
-		public bool IsVanilla { get; private set; }
+		private bool? _existentFile;
 
-		public bool IsCompat { get; private set; }
+		private bool IsExistentFile
+        {
+			get
+            {
+				if (_existentFile == null)
+                {
+					_existentFile = GameUty.FileSystemMod.IsExistentFile(menu.m_strMenuFileName);
+				}
+
+				return (bool)_existentFile;
+			}
+        }
+
+		public bool IsMod => IsExistentFile;
+
+		public bool IsVanilla => !IsExistentFile;
+
+
+		private bool? _isCompat;
+
+		public bool IsCompat { 
+			get
+            {
+				if(_isCompat == null)
+                {
+					_isCompat = IsVanilla && (gameObject.transform.Find("Old")?.gameObject.activeSelf ?? false);
+				}
+
+				return (bool)_isCompat;
+			}
+		}
 
 		public EditMenuPanelItem(GameObject go, SceneEdit.SMenuItem menu)
         {
 			this.gameObject = go;
 			this.menu = menu;
-
-			if(GameUty.FileSystemMod.IsExistentFile(menu.m_strMenuFileName))
-            {
-				IsMod = true;
-				IsVanilla = false;
-            } else
-            {
-				IsMod = false;
-				IsVanilla = true;
-            }
-
-			var oldTransform = go.transform.Find("Old");
-			if (IsVanilla && oldTransform && oldTransform.gameObject.activeSelf)
-			{
-				IsCompat = true;
-			} else
-            {
-				IsCompat = false;
-            }
 		}
 	}
 }

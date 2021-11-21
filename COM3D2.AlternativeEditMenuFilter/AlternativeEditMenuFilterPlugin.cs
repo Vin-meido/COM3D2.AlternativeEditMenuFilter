@@ -59,14 +59,14 @@ namespace COM3D2.AlternativeEditMenuFilter
 			Transform transform = GameObject.Find("UI Root").transform;
 			if (transform == null)
 			{
-				UnityEngine.Debug.Log($"Cannot find UI Root for {panelName}");
+				Log.LogVerbose("Cannot find UI Root for {0}", panelName);
 				return null;
 			}
 
 			Transform transform2 = transform.Find(panelName);
 			if (transform2)
 			{
-				Log.LogVerbose($"Found panel {panelName}");
+				Log.LogVerbose("Found panel {0}", panelName);
 				GameObject gameObject = NGUITools.AddChild(transform2.gameObject);
 				gameObject.name = typeof(T).Name;
 				var control = gameObject.AddComponent<T>();
