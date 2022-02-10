@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,20 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BepInEx">
-      <HintPath>..\libs\BepInEx.dll</HintPath>
+    <Reference Include="BepInEx, Version=5.4.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BepInEx.BaseLib.5.4.16\lib\net35\BepInEx.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\libs\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.5.6.1\lib\net35\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="XUnity.AutoTranslator.Plugin.Core">
       <HintPath>..\libs\XUnity.AutoTranslator.Plugin.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -57,13 +57,15 @@
       <Name>COM3D2.AlternativeEditMenuFilter</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd $(OutDir)
 mkdir BepinEx\Plugins\AlternativeEditMenuFilter\
 copy $(TargetPath) BepinEx\Plugins\AlternativeEditMenuFilter\
 copy $(TargetDir)\COM3D2.AlternativeEditMenuFilter.dll BepinEx\Plugins\AlternativeEditMenuFilter\
-copy $(TargetDir)\COM3D2.SimpleUI.dll BepinEx\Plugins\AlternativeEditMenuFilter\
 tar -cvaf COM3D2.AlternativeEditMenuFilter.zip BepinEx
 explorer.exe .
 xcopy /E /F /R /Y BepinEx\Plugins F:\COM-3d2\BepinEx\plugins\</PostBuildEvent>
