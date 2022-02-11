@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using BepInEx;
 using BepInEx.Logging;
 
+using COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider;
+
 namespace COM3D2.AlternativeEditMenuFilter
 {
     [BepInPlugin("org.bepinex.plugins.com3d2.alternativeeditmenufilter", "AlternativeEditMenuFilter", "1.0")]
@@ -27,7 +29,8 @@ namespace COM3D2.AlternativeEditMenuFilter
 
 			this.Config = new AlternativeEditMenuFilterConfig(base.Config);
 
-			this.TranslationProvider = new DummyTranslationProvider();
+			//this.TranslationProvider = new DummyTranslationProvider();
+			this.TranslationProvider = new XUATTranslationProvider();
 
 			SceneManager.sceneLoaded += this.OnChangedSceneLevel;
 		}

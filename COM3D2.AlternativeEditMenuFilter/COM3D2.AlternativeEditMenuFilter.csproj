@@ -39,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HarmonyX.2.9.0\lib\net35\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\COM3D2.GameLibs.2.11.1-r.0\lib\net35\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -62,11 +66,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Translation\XUATTranslationProvider.cs" />
     <Compile Include="Assert.cs" />
     <Compile Include="AlternativeEditMenuFilterPlugin.cs" />
     <Compile Include="EditMenuPanelFilter.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="DummyTranslationProvider.cs" />
+    <Compile Include="Translation\DummyTranslationProvider.cs" />
     <Compile Include="EditMenuPanelController.cs" />
     <Compile Include="EditMenuPanelItem.cs" />
     <Compile Include="ITranslationProvider.cs" />
@@ -77,13 +82,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ILMerge.props" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\..\..\SimpleUI\COM3D2.SimpleUI\COM3D2.SimpleUIShared\COM3D2.SimpleUIShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>cd $(OutDir)
+mkdir BepinEx\Plugins\AlternativeEditMenuFilter\
+copy $(TargetPath) BepinEx\Plugins\AlternativeEditMenuFilter\
+copy $(TargetDir)\COM3D2.AlternativeEditMenuFilter.dll BepinEx\Plugins\AlternativeEditMenuFilter\
+tar -cvaf COM3D2.AlternativeEditMenuFilter.zip BepinEx
+explorer.exe .
+xcopy /E /F /R /Y BepinEx\Plugins F:\COM-3d2\BepinEx\plugins\</PostBuildEvent>
   </PropertyGroup>
 </Project>
