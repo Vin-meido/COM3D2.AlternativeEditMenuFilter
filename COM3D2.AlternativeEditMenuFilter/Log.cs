@@ -24,6 +24,11 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
+        internal static void LogWarning(string message, params object[] args)
+        {
+            Logger.LogWarning(string.Format(message, args));
+        }
+
         internal static void LogInfo(string message, params object[] args)
         {
             Logger.LogInfo(string.Format(message, args));

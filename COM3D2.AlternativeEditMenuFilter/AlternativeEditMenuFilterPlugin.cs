@@ -17,7 +17,8 @@ namespace COM3D2.AlternativeEditMenuFilter
     {
         public static AlternateEditMenuFilterPlugin Instance { get; private set; }
 
-		public ITranslationProvider TranslationProvider { get; set; }
+		public ITranslationProvider TranslationProvider {
+			get; protected set; }
 
 		public new AlternativeEditMenuFilterConfig Config { get; private set; }
 
@@ -29,8 +30,12 @@ namespace COM3D2.AlternativeEditMenuFilter
 
 			this.Config = new AlternativeEditMenuFilterConfig(base.Config);
 
-			//this.TranslationProvider = new DummyTranslationProvider();
-			this.TranslationProvider = new XUATTranslationProvider();
+			this.TranslationProvider = XUATTranslationProvider.Create();
+			if (this.TranslationProvider == null)
+            {
+				Log.LogWarning("XUAT is not available, machine translated text search not available");
+				this.TranslationProvider = new DummyTranslationProvider();
+			}
 
 			SceneManager.sceneLoaded += this.OnChangedSceneLevel;
 		}

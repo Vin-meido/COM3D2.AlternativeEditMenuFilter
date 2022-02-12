@@ -32,6 +32,47 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
 
     class XUATTranslator
     {
+        static bool initialized = false;
+        static MethodInfo tryTranslateMethod;
+        static MethodInfo translateAsyncMethod;
+        static Type autoTranslatorType;
+        static PropertyInfo autoTranslatorDefault;
+
+        public static bool Initialize()
+        {
+            if (initialized)
+            {
+                return true;
+            }
+
+            autoTranslatorType = AccessTools.TypeByName("XUnity.AutoTranslator.Plugin.Core.AutoTranslator");
+            if (autoTranslatorType == null)
+            {
+                return false;
+            }
+
+            autoTranslatorDefault = autoTranslatorType.GetProperty("Default");
+
+            var translatorInterface = autoTranslatorDefault.PropertyType;
+
+            tryTranslateMethod = translatorInterface.GetMethod(
+                "TryTranslate",
+                new Type[] { typeof(string), typeof(string).MakeByRefType() }
+            );
+
+            var translationResultClass = AccessTools.TypeByName("XUnity.AutoTranslator.Plugin.Core.TranslationResult");
+            var actionTClass = typeof(Action<>);
+            var callbackClass = actionTClass.MakeGenericType(translationResultClass);
+
+            translateAsyncMethod = translatorInterface.GetMethod(
+                "TranslateAsync",
+                new Type[] { typeof(string), callbackClass }
+            );
+
+            initialized = true;
+            return true;
+        }
+
         public static XUATTranslator Default
         {
             get {
@@ -40,8 +81,6 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             }
         }
 
-        MethodInfo tryTranslateMethod;
-        MethodInfo translateAsyncMethod;
 
         public bool TryTranslate(string text, out string translatedText)
         {
@@ -67,7 +106,7 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
                 resolver(new XUATTranslationResult(o));
             };
 
-            this.translateAsyncMethod.Invoke(
+            translateAsyncMethod.Invoke(
                 this.translator,
                 new object[]
                 {
@@ -79,21 +118,6 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
         public XUATTranslator(object translator)
         {
             this.translator = translator;
-
-            this.tryTranslateMethod = this.translator.GetType().GetInterface("ITranslator").GetMethod("TryTranslate", new Type[] { typeof(string), typeof(string).MakeByRefType() });
-
-            var translationResultClass = AccessTools.TypeByName("XUnity.AutoTranslator.Plugin.Core.TranslationResult");
-            var actionTClass = typeof(Action<>);
-            var callbackClass = actionTClass.MakeGenericType(translationResultClass);
-
-            this.translateAsyncMethod = this.translator.GetType().GetInterface("ITranslator").GetMethod("TranslateAsync", new Type[] { typeof(string), callbackClass });
-            /*
-            this.translateAsyncDelegate = (TranslateAsyncDelegate)Delegate.CreateDelegate(
-                typeof(TranslateAsyncDelegate),
-                this.translator,
-                translateAsyncMethod
-            );
-            */
         }
 
         object translator;
@@ -104,7 +128,18 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
         XUATTranslator translator;
         readonly Queue<AsyncTResult> queue = new Queue<AsyncTResult>();
 
-        public XUATTranslationProvider()
+
+        public static ITranslationProvider Create()
+        {
+            if (XUATTranslator.Initialize())
+            {
+                return new XUATTranslationProvider();
+            }
+
+            return null;
+        }
+
+        protected XUATTranslationProvider()
         {
             this.translator = XUATTranslator.Default;
         }
