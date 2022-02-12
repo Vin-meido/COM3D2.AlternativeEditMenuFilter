@@ -193,13 +193,14 @@ namespace COM3D2.AlternativeEditMenuFilter
                     }
                 });
 
-
+            /*
             area.Toggle(new Vector2(180, panelHeight), "Translations", this.SearchLocalized)
                 .AddChangeCallback(v =>
                 {
                     this.SearchLocalized = v;
                     this.QueueUpdateItemList();
                 });
+            */
 
             UpdateToggles();
         }
