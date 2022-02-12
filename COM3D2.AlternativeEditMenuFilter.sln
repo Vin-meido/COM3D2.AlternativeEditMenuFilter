@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.AlternativeEditMenuFilter", "COM3D2.AlternativeEditMenuFilter\COM3D2.AlternativeEditMenuFilter.csproj", "{6E13F966-B4CC-40BA-A8FB-4DAA45E1346F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.AlternativeEditMenuFilter.MTLProvider", "COM3D2.AlternativeEditMenuFilter.MTLProvider\COM3D2.AlternativeEditMenuFilter.MTLProvider.csproj", "{ECCB25FA-325B-4AD3-925C-572C652A82E2}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "COM3D2.SimpleUIShared", "..\..\SimpleUI\COM3D2.SimpleUI\COM3D2.SimpleUIShared\COM3D2.SimpleUIShared.shproj", "{B3A8378D-2205-45A8-AAD4-F08F9D0FF281}"
 EndProject
 Global
@@ -23,10 +21,6 @@ Global
 		{6E13F966-B4CC-40BA-A8FB-4DAA45E1346F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E13F966-B4CC-40BA-A8FB-4DAA45E1346F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E13F966-B4CC-40BA-A8FB-4DAA45E1346F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ECCB25FA-325B-4AD3-925C-572C652A82E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ECCB25FA-325B-4AD3-925C-572C652A82E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ECCB25FA-325B-4AD3-925C-572C652A82E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ECCB25FA-325B-4AD3-925C-572C652A82E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
