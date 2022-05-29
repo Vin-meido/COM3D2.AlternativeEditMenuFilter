@@ -28,6 +28,7 @@ namespace COM3D2.AlternativeEditMenuFilter
         IButton termIncludeButton;
         ITextField searchTextField;
         IDropdown historyDropdown;
+        IGenericDropdown itemTypeFilterDropdown;
 
         readonly List<string> History = new List<string>();
 
@@ -176,14 +177,15 @@ namespace COM3D2.AlternativeEditMenuFilter
                     }
                 });
 
-            area.GenericDropdown(new Vector2(50, panelHeight), "All")
+            itemTypeFilterDropdown = area.GenericDropdown(new Vector2(50, panelHeight), "All")
                 .Choice(ItemTypeFilterEnum.ALL, "[All] items", "All")
                 .Choice(ItemTypeFilterEnum.VANILLA, "[COM] Vanilla COM3D2", "COM")
                 .Choice(ItemTypeFilterEnum.COMPAT, "[CM] Compat/CM", "CM")
                 .Choice(ItemTypeFilterEnum.MOD, "[Mod]s", "Mod")
                 .SetValue(this.ItemTypeFilter)
-                .SetUpdateTextOnValuechange(true)
-                .AddChangeCallback(o =>
+                .SetUpdateTextOnValuechange(true);
+
+            itemTypeFilterDropdown.AddChangeCallback(o =>
                 {
                     if(o is ItemTypeFilterEnum t)
                     {
@@ -192,15 +194,6 @@ namespace COM3D2.AlternativeEditMenuFilter
                         Log.LogVerbose("New filter type is {0}", t);
                     }
                 });
-
-            /*
-            area.Toggle(new Vector2(180, panelHeight), "Translations", this.SearchLocalized)
-                .AddChangeCallback(v =>
-                {
-                    this.SearchLocalized = v;
-                    this.QueueUpdateItemList();
-                });
-            */
 
             UpdateToggles();
         }
@@ -436,6 +429,8 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             this.search = "";
             this.searchTextField.Value = "";
+            this.ItemTypeFilter = ItemTypeFilterEnum.ALL;
+            this.itemTypeFilterDropdown.SetValue(this.ItemTypeFilter);
             this.TranslationProvider.ResetAsyncQueue();
             controller.ShowAll();
             controller.ResetView();

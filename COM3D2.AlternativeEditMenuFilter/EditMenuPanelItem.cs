@@ -14,7 +14,13 @@ namespace COM3D2.AlternativeEditMenuFilter
 		public bool Visible
         {
 			get => gameObject.activeSelf;
-			set => gameObject.SetActive(value);
+			set
+			{
+				if (gameObject.activeSelf != value)
+                {
+					gameObject.SetActive(value);
+				}
+			}
         }
 
 		public string Filename
