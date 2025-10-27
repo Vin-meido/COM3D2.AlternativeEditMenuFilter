@@ -237,7 +237,7 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
         static void LogVerbose(object obj)
         {
 #if DEBUG
-            Instance.Logger.LogInfo(obj);
+            //Instance.Logger.LogInfo(obj);
 #endif
         }
 
